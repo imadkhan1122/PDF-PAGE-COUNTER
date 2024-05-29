@@ -1,12 +1,9 @@
 import os
-import io
 import re
-from PIL import Image
-import pdf2image
 import fitz #pip install PyMuPDF Pillow
 from bs4 import BeautifulSoup as bs
-import requests
 import pdfkit
+from security import safe_requests
 
 def pdf_downloader(Pth, url, printAsImage):
     NoOfPages = ''
@@ -18,7 +15,7 @@ def pdf_downloader(Pth, url, printAsImage):
     pth = Pth + '/' + 'PDF_DATA'
     if not os.path.exists(pth):
         os.mkdir(pth)
-    r = requests.get(index_url, headers={'User-Agent': 'Mozilla/5.0'})
+    r = safe_requests.get(index_url, headers={'User-Agent': 'Mozilla/5.0'})
     soup = bs(r.content,"html.parser")
     table = soup.find_all("table")[0]
     tr = table.findAll('tr')
@@ -26,7 +23,7 @@ def pdf_downloader(Pth, url, printAsImage):
     splitPth = os.path.split(atag)
     fileName = pth+ '/'+ splitPth[1]
     link = 'https://www.sec.gov/'+atag
-    url = requests.get(link, headers={'User-Agent': 'Mozilla/5.0'})
+    url = safe_requests.get(link, headers={'User-Agent': 'Mozilla/5.0'})
     htmltext = url.text
     splitpth = os.path.split(splitPth[0])
     pdfPth = pth+'/'+splitpth[1]+'.pdf'
