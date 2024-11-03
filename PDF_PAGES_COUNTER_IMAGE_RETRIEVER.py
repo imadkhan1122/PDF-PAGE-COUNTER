@@ -18,7 +18,7 @@ def pdf_downloader(Pth, url, printAsImage):
     pth = Pth + '/' + 'PDF_DATA'
     if not os.path.exists(pth):
         os.mkdir(pth)
-    r = requests.get(index_url, headers={'User-Agent': 'Mozilla/5.0'})
+    r = requests.get(index_url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=60)
     soup = bs(r.content,"html.parser")
     table = soup.find_all("table")[0]
     tr = table.findAll('tr')
@@ -26,7 +26,7 @@ def pdf_downloader(Pth, url, printAsImage):
     splitPth = os.path.split(atag)
     fileName = pth+ '/'+ splitPth[1]
     link = 'https://www.sec.gov/'+atag
-    url = requests.get(link, headers={'User-Agent': 'Mozilla/5.0'})
+    url = requests.get(link, headers={'User-Agent': 'Mozilla/5.0'}, timeout=60)
     htmltext = url.text
     splitpth = os.path.split(splitPth[0])
     pdfPth = pth+'/'+splitpth[1]+'.pdf'
